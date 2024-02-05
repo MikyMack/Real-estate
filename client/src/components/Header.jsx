@@ -30,7 +30,7 @@ function Header() {
             </li>
           </Link>
           <Link to="/sign-in">
-            <li className="hidden sm:inline text-slate-700 hover:text-red-700 cursor-pointer">
+            <li className=" sm:inline text-slate-700 hover:text-red-700 cursor-pointer">
               Sign In
             </li>
           </Link>

@@ -16,7 +16,6 @@ function Profile() {
   const [formData, setFormData] = useState({});
   const fileRef = useRef(null);
 
-
   useEffect(() => {
     if (file) {
       handleFileUpload(file);
@@ -30,7 +29,7 @@ function Profile() {
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
-      'state_changed',
+      "state_changed",
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -65,17 +64,17 @@ function Profile() {
           src={formData.avatar || currentUser.avatar}
           alt="profile"
         />
-         <p className='text-sm self-center'>
+        <p className="text-sm self-center">
           {fileUploadError ? (
-            <span className='text-red-700'>
+            <span className="text-red-700">
               Error Image upload (image must be less than 2 mb)
             </span>
           ) : filePerc > 0 && filePerc < 100 ? (
-            <span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>
+            <span className="text-slate-700">{`Uploading ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
-            <span className='text-green-700'>Image successfully uploaded!</span>
+            <span className="text-green-700">Image successfully uploaded!</span>
           ) : (
-            ''
+            ""
           )}
         </p>
         <input

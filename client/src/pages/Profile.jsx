@@ -11,6 +11,9 @@ import {
   updateUserStart,
   updateUserFailure,
   updateUserSuccess,
+  deleteUserFailure,
+  deleteUserSuccess,
+  deleteUserStart,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -20,7 +23,7 @@ function Profile() {
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
-  const [updateSuccess,setUpdateSuccess] = useState(false)
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const fileRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -79,6 +82,25 @@ function Profile() {
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+    }
+  };
+  const handleDeleteUSer = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
@@ -143,11 +165,18 @@ function Profile() {
         </button>
       </form>
       <div className="flex justify-between mt-4 ">
-        <span className="text-red-700 cursor-pointer ">Delete Account</span>
+        <span
+          onClick={handleDeleteUSer}
+          className="text-red-700 cursor-pointer "
+        >
+          Delete Account
+        </span>
         <span className="text-red-700 cursor-pointer ">Sign Out</span>
       </div>
-      <p className="text-red-700 mt-5">{error?error:""}</p>
-      <p className="text-green-700 mt-5">{updateSuccess?'User is updated Successfully':""}</p>
+      <p className="text-red-700 mt-5">{error ? error : ""}</p>
+      <p className="text-green-700 mt-5">
+        {updateSuccess ? "User is updated Successfully" : ""}
+      </p>
     </div>
   );
 }
